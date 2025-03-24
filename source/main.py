@@ -39,18 +39,26 @@ def menu(accounts_db):
         try:
             ivalue = int(value)
         except ValueError:
-            print("Invalid input. Please enter a number.")
             continue
+            # raise ValueError("Invalid input. Please enter a number.")
 
         match ivalue:
             case 1:
                 create_account(accounts_db)
             case 2:
                 amount = input('Introduce an amount: ')
-                account.deposit(accounts_db[0], amount)
+                try:
+                    account.deposit(accounts_db[0], amount)
+                except ValueError as e:
+                    # Captura o ValueError lançado e exibe a mensagem
+                    print(f"Erro: {e}")
             case 3:
                 amount = input('Introduce an amount: ')
-                account.withdraw(accounts_db[0], amount)
+                try:
+                    account.withdraw(accounts_db[0], amount)
+                except ValueError as e:
+                    # Captura o ValueError lançado e exibe a mensagem
+                    print(f"Erro: {e}")
             case 4:
                 transfer(accounts_db)
             case 5:
@@ -58,15 +66,24 @@ def menu(accounts_db):
             case 6:
                 return 0
             case _:
-                print("Invalid input. Please enter a number.")
+                raise ValueError("Deposit amount must be numeric.")
+                # print("Invalid input. Please enter a number.")
 
 def main():
     accounts_db = []
     print("---- Welcome to John's Bank ----")
     while (True):
-        exit_code = menu(accounts_db)
-        if exit_code == 0:
-            break
+        try:
+            exit_code = menu(accounts_db)
+
+            if exit_code == 0:
+                break
+        
+        except ValueError as e:
+            # Captura o ValueError lançado e exibe a mensagem
+            print(f"Erro: {e}")
+        
+        
 
     
 

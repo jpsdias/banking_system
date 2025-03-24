@@ -10,7 +10,6 @@ class account():
             # Convert the input to a float
             famount = float(amount)
         except ValueError:
-            print("Invalid input! Please enter a numeric value.")
             raise ValueError("Deposit amount must be numeric.")
 
         # Check if the deposit amount is positive
@@ -27,7 +26,6 @@ class account():
             # Convert the input to a float
             famount = float(amount)
         except ValueError:
-            print("Invalid input! Please enter a numeric value.")
             raise ValueError("Deposit amount must be numeric.")
         
         # Check if the deposit amount is positive
@@ -35,7 +33,7 @@ class account():
             raise ValueError("Deposit amount must be a positive number.")
         
         if (self.balance < famount):
-            print ('This account does not have sufficient funds!')
+            print ('Insufficient funds!')
         else:
             # Round the number to 2 decimal places and update the balance
             famount = round(famount, 2)

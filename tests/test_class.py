@@ -22,7 +22,7 @@ class Testaccount:
 
     #Pytest to fail
     @pytest.mark.parametrize("amount", ["random string", -100])
-    @pytest.mark.xfail(reason="A string cannot be inserted on the amount field")
+    @pytest.mark.xfail(reason="A string cannot be inserted on the amount field or negative number")
     def test_fail_deposit(self, amount):
         account.deposit(self, amount)
     
@@ -32,7 +32,7 @@ class Testaccount:
         account.withdraw(self, amount)
         if (self.balance < amount):
             captured = capsys.readouterr().out
-            expected_output = ('This account does not have sufficient funds!')
+            expected_output = ('Insufficient funds!')
             assert expected_output in captured
         else:
             assert self.balance == balance - amount
@@ -45,7 +45,7 @@ class Testaccount:
     
     #Pytest to fail
     @pytest.mark.parametrize("amount", ["random string", -100])
-    @pytest.mark.xfail(reason="A string cannot be inserted on the amount field")
+    @pytest.mark.xfail(reason="A string cannot be inserted on the amount field or negative number")
     def test_fail_withdraw(self, amount):
         account.withdraw(self, amount)
 
