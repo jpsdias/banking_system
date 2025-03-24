@@ -14,12 +14,25 @@ class Testaccount:
         account.deposit(self, amount)
         assert self.balance == prev_balance + amount
 
+    #Pytest for scanning a string
+    # @pytest.mark.parametrize("amount", ["random string"])
+    # def test_fail_deposit(self,amount, capsys):
+    #     account.deposit(self, amount)
+    #     captured = capsys.readouterr().out
+    #     expected_output = ("Invalid input! Please enter a numeric value.")
+    #     assert expected_output in captured
+
+    #Pytest to the error is raised
     @pytest.mark.parametrize("amount", ["random string"])
-    def test_fail_deposit(self,amount, capsys):
+    def test_raised_error_deposit(self, amount):
+        with pytest.raises(ValueError): # Indicates an exception
+            result = account.deposit(self, amount)
+
+    #Pytest to fail
+    @pytest.mark.parametrize("amount", ["random string"])
+    @pytest.mark.xfail(reason="A string cannot be inserted on the amount field")
+    def test_fail_deposit(self, amount):
         account.deposit(self, amount)
-        captured = capsys.readouterr().out
-        expected_output = ("Invalid input! Please enter a numeric value.")
-        assert expected_output in captured
     
     @pytest.mark.parametrize("balance, amount", [(100.0, 20.0), (20.0, 100.0)])
     def test_withdraw(self, balance, amount, capsys):
@@ -33,13 +46,13 @@ class Testaccount:
             assert expected_output in captured
 
     @pytest.mark.parametrize("amount", ["random string"])
-    def test_error_withdraw(self, amount):
+    def test_raised_error_withdraw(self, amount):
         with pytest.raises(ValueError): # Indicates an exception
             result = account.withdraw(self, amount)
 
     @pytest.mark.parametrize("amount", ["random string"])
     @pytest.mark.xfail(reason="A string cannot be inserted on the amount field")
-    def test_error2_withdraw(self, amount):
+    def test_fail_withdraw(self, amount):
         account.withdraw(self, amount)
 
 

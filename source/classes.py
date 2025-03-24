@@ -15,6 +15,7 @@ class account():
             self.balance = self.balance + famount
         except ValueError:
             print("Invalid input! Please enter a numeric value.")
+            raise ValueError
         
 
     def withdraw(self, amount:float):
