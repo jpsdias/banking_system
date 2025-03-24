@@ -14,14 +14,6 @@ class Testaccount:
         account.deposit(self, amount)
         assert self.balance == prev_balance + amount
 
-    #Pytest for scanning a string
-    # @pytest.mark.parametrize("amount", ["random string"])
-    # def test_fail_deposit(self,amount, capsys):
-    #     account.deposit(self, amount)
-    #     captured = capsys.readouterr().out
-    #     expected_output = ("Invalid input! Please enter a numeric value.")
-    #     assert expected_output in captured
-
     #Pytest to the error is raised
     @pytest.mark.parametrize("amount", ["random string", -100])
     def test_raised_error_deposit(self, amount):
