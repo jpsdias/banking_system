@@ -39,8 +39,7 @@ def menu(accounts_db):
         try:
             ivalue = int(value)
         except ValueError:
-            continue
-            # raise ValueError("Invalid input. Please enter a number.")
+            raise ValueError("Invalid input. Please enter a number.")
 
         match ivalue:
             case 1:
@@ -66,8 +65,7 @@ def menu(accounts_db):
             case 6:
                 return 0
             case _:
-                raise ValueError("Deposit amount must be numeric.")
-                # print("Invalid input. Please enter a number.")
+                continue
 
 def main():
     accounts_db = []
@@ -82,8 +80,6 @@ def main():
         except ValueError as e:
             # Captura o ValueError lançado e exibe a mensagem
             print(f"Erro: {e}")
-        
-        
 
     
 
