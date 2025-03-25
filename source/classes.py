@@ -1,3 +1,4 @@
+from exceptions import InsufficientFundsException
 
 class account():
     def __init__(self, id:int, user:str):
@@ -32,8 +33,8 @@ class account():
         if famount <= 0:
             raise ValueError("Deposit amount must be a positive number.")
         
-        if (self.balance < famount):
-            print ('Insufficient funds!')
+        if self.balance < famount:
+            raise InsufficientFundsException("Insufficient funds!")
         else:
             # Round the number to 2 decimal places and update the balance
             famount = round(famount, 2)
