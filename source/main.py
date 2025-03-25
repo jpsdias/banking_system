@@ -1,4 +1,5 @@
 from classes import account
+from exceptions import InsufficientFundsException, NoIdException
 
 def create_account(accounts_db):
     username = input("Enter a username for your account:\n")
@@ -7,23 +8,42 @@ def create_account(accounts_db):
     accounts_db.append(new_account)
     account.extract(accounts_db[id-1])
 
-def transfer(accounts_db):
-    id = input('Insert the ID from the beneficiary: ')
+def id_verification(accounts_db):
+    dest_id = input('Insert beneficiary ID: ')
+
     try:
-        id = int(id)
-        for i in range (len(accounts_db)):
-            if accounts_db[i].id == id:
-                dest = i
-                continue
+        dest_id = int(dest_id)
     except ValueError:
-        print('No id found! Choose another beneficiary.')
+        raise ValueError("ID must be an Integer!")
     
-    trans_amount = input("Amount to transfer:")
+    if dest_id <= 0:
+        raise ValueError("ID must be a positive number.")
+    
+    for i in range (len(accounts_db)):
+        if accounts_db[i].id == dest_id:
+                return i
+    
+    raise NoIdException("No User found in the DB.")
+        
+def transfer(src, dest):
+    amount = input('Insert the amount to transfer: ')
     try:
-        account.withdraw(accounts_db[0], trans_amount)
-        account.deposit(accounts_db[dest], trans_amount)
-    except ValueError:
-        print('Such amount is not available!')
+        account.withdraw(src, amount)
+    except ValueError as e:
+        # Captura o ValueError lançado e exibe a mensagem
+        print(f"Error: {e}")
+    except InsufficientFundsException as e:
+        print(f"Error: {e}")
+
+    else:
+        try:
+            account.deposit(dest, amount)
+        except ValueError as e:
+            # Captura o ValueError lançado e exibe a mensagem
+            print(f"Error: {e}")
+        
+        account.extract(src)
+        account.extract(dest)
 
 def menu(accounts_db):
     while True:
@@ -50,16 +70,22 @@ def menu(accounts_db):
                     account.deposit(accounts_db[0], amount)
                 except ValueError as e:
                     # Captura o ValueError lançado e exibe a mensagem
-                    print(f"Erro: {e}")
+                    print(f"Error: {e}")
             case 3:
                 amount = input('Introduce an amount: ')
                 try:
                     account.withdraw(accounts_db[0], amount)
-                except ValueError as e:
+                except (ValueError, InsufficientFundsException) as e:
                     # Captura o ValueError lançado e exibe a mensagem
-                    print(f"Erro: {e}")
+                    print(f"Error: {e}")
             case 4:
-                transfer(accounts_db)
+                try:
+                    dest = id_verification(accounts_db)
+                except NoIdException as e:
+                    # Captura o ValueError lançado e exibe a mensagem
+                    print(f"Error: {e}")
+                else:
+                    transfer(accounts_db[0], accounts_db[dest])
             case 5:
                 account.extract(accounts_db[0])
             case 6:
@@ -79,16 +105,7 @@ def main():
         
         except ValueError as e:
             # Captura o ValueError lançado e exibe a mensagem
-            print(f"Erro: {e}")
-
-    
-
-    # accounts_db = create_account(accounts_db)
-
-    # accounts_db = deposit(accounts_db)
-
-    # withdraw(accounts_db)
-
+            print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()

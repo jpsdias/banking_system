@@ -60,12 +60,3 @@ class Testaccount:
             f"Balance: {self.balance}€\n"
         )
         assert expected_output in captured
-
-# @pytest.fixture
-# def test_account():
-#     # Create an account with id=1 and username="Teste"
-#     return account(1, "Teste")
-
-# # Test to check that the username is correctly set
-# def test_username(test_account):
-#     assert test_account.username == "Teste"
