@@ -1,5 +1,6 @@
 import pytest
 from source.classes import account
+from source.exceptions import InsufficientFundsException
 
 class Testaccount:
     def setup_method(self, method):
@@ -27,15 +28,21 @@ class Testaccount:
         account.deposit(self, amount)
     
     @pytest.mark.parametrize("balance, amount", [(100.0, 20.0), (20.0, 100.0)])
-    def test_withdraw(self, balance, amount, capsys):
+    def test_withdraw(self, balance, amount):
         self.balance = balance
-        account.withdraw(self, amount)
+        
         if (self.balance < amount):
-            captured = capsys.readouterr().out
-            expected_output = ('Insufficient funds!')
-            assert expected_output in captured
+            with pytest.raises(InsufficientFundsException): # Indicates an exception
+                account.withdraw(self, amount)
         else:
+            account.withdraw(self, amount)
             assert self.balance == balance - amount
+
+    # @pytest.mark.parametrize("balance, amount", [(20.0, 100.0)])
+    # def test_insufficient_funds_withdraw(self, balance, amount):
+    #     self.balance = balance
+    #     with pytest.raises(InsufficientFundsException): # Indicates an exception
+    #         account.withdraw(self, amount)
 
     #Pytest to the error is raised
     @pytest.mark.parametrize("amount", ["random string", -100])

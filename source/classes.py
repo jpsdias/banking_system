@@ -1,4 +1,4 @@
-from exceptions import InsufficientFundsException
+from source.exceptions import InsufficientFundsException
 
 class account():
     def __init__(self, id:int, user:str):
@@ -38,7 +38,7 @@ class account():
         else:
             # Round the number to 2 decimal places and update the balance
             famount = round(famount, 2)
-            self.balance = self.balance - famount
+            self.balance -= famount
     
     def extract(self):
         print(f'----- Account Data -----\n'
